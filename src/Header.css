@@ -57,6 +57,10 @@
   font-weight: 800;
 }
 
+.header__checkoutLink {
+  text-decoration: none;
+}
+
 .header__oprtionBasket {
   display: flex;
   align-items: center;
