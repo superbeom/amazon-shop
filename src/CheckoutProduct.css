@@ -30,7 +30,3 @@
   margin-top: 10px;
   color: #111;
 }
-
-.checkoutProduct__info > button:active {
-  outline: none;
-}
