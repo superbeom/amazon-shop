@@ -6,8 +6,11 @@ import Home from "./Home";
 import Checkout from "./Checkout";
 import Login from "./Login";
 import Payment from "./Payment";
+import Orders from "./Orders";
 import { useStateValue } from "./StateProvider";
 import { auth } from "./firebase";
+import { Elements } from "@stripe/react-stripe-js";
+import { promise } from "./stripe";
 
 function App() {
   const [{}, dispatch] = useStateValue();
@@ -37,6 +40,10 @@ function App() {
     <Router>
       <div className="app">
         <Switch>
+          <Route path="/orders">
+            <Header />
+            <Orders />
+          </Route>
           <Route path="/login">
             <Login />
           </Route>
@@ -46,7 +53,9 @@ function App() {
           </Route>
           <Route path="/payment">
             <Header />
-            <Payment />
+            <Elements stripe={promise}>
+              <Payment />
+            </Elements>
           </Route>
           <Route path="/">
             <Header />
