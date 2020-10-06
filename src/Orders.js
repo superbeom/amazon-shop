@@ -1,13 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { db } from "./firebase";
 import "./Orders.css";
 import { useStateValue } from "./StateProvider";
+import Order from "./Order";
 
 function Orders() {
   const [{ basket, user }, dispatch] = useStateValue();
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      db.collection("users")
+        .doc(user?.uid)
+        .collection("orders")
+        .orderBy("created", "desc")
+        .onSnapshot((snapshot) =>
+          setOrders(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          )
+        );
+    } else {
+      setOrders([]);
+    }
+  }, [user]);
+
+  console.log("orders: ", orders);
+
   return (
     <div className="orders">
-      <h1>THIS IS ORDERS PAGE</h1>
-      <h2>USER IS {user?.email}</h2>
+      <h1>Your Orders</h1>
+
+      <div className="orders__order">
+        {orders?.map((order) => (
+          <Order
+            key={(Math.random() + Math.random()).toString()}
+            order={order}
+          />
+        ))}
+      </div>
     </div>
   );
 }
